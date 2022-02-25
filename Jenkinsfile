@@ -3,19 +3,19 @@ pipeline
     agent any 
     stages 
     { 
-        stage('Build') { 
+        stage('build') { 
             steps { 
               echo 'build done'
               sh './gradlew clean build' 
             } 
         } 
-        stage('Upload') { 
+        stage('upload') { 
             steps { 
                 echo 'upload done'
                 sh 'aws s3 cp build/libs/application.war s3://springbootcicos3/application.war --region us-east-1' 
             }
         } 
-        stage('Deploy') { 
+        stage('deploy') { 
             steps { 
                  echo 'deploy done' 
                  sh 'aws elasticbeanstalk create-application-version --region us-east-1 --application-name Springbootcicdyeongseon-env --version-label ${BUILD_TAG} --source-bundle S3Bucket="springbootcicos3",S3Key="application.war"' 
